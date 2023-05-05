@@ -4,6 +4,9 @@ import java.awt.Dimension;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import org.jfree.chart.ChartFactory;
@@ -25,11 +28,16 @@ public class Grafica extends javax.swing.JFrame {
    private void cargarDatos() {
         // Ruta del archivo CSV
        
-    String csvFile = "Archivo.csv";
-    String line = "";
-    String cvsSplitBy = ";";
+   String urlStr = "https://www.datos.gov.co/api/views/y399-rzwf/rows.csv?accessType=DOWNLOAD";
+String line = "";
+String cvsSplitBy = ";";
 
-    try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+try {
+    URL url = new URL(urlStr);
+    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    InputStreamReader isr = new InputStreamReader(connection.getInputStream());
+
+    try (BufferedReader br = new BufferedReader(isr)) {
         while ((line = br.readLine()) != null) {
             String[] data = line.split(cvsSplitBy);
             LectorCsv newLector = new LectorCsv();
@@ -39,6 +47,8 @@ public class Grafica extends javax.swing.JFrame {
             newLector.setGenero(data[9]);
             lectores.add(newLector);
         }
+    }
+    
     } catch (IOException e) {
         e.printStackTrace();
     
@@ -337,35 +347,35 @@ if (filtro.equalsIgnoreCase("nivel academico")) {
 
 
     // Mostrar los resultados
-   if (filtro.equalsIgnoreCase("nivel academico")) {
-        System.out.println("Colombianos con nivel de Pregrado: " + contadorPregrado);
-        System.out.println("Colombianos con nivel Postgrado: " + contadorPostgrado);
-        System.out.println("Colombianos con nivel Primaria: " + contadorPrimaria);
-        System.out.println("Colmbianos con nivel Bachillerato: " + contadorBachillerato);
-        System.out.println("Colmbianos que no especifican su nivel academico: " + contadorNoIndica);
+    if (filtro.equalsIgnoreCase("nivel academico")) {
+        System.out.println("Pregrado: " + contadorPregrado);
+        System.out.println("Postgrado: " + contadorPostgrado);
+        System.out.println("Primaria: " + contadorPrimaria);
+        System.out.println("Bachillerato: " + contadorBachillerato);
+        System.out.println("No indica: " + contadorNoIndica);
         
              
     }
     if (filtro.equalsIgnoreCase("genero")) {
-     System.out.println("Colombianos del genero masculino en el extrangero: " + contmas);
-     System.out.println("Colombianos del genero femenino en el extrangero : " + contfem);
+     System.out.println("masculino: " + contmas);
+     System.out.println("femenino: " + contfem);
     }
     
      if (filtro.equalsIgnoreCase("pais")) {
-     System.out.println("Personas colombianas que viven en Estados Unidos: " + contUSA);
-     System.out.println("Personas colombianas que viven en España: " + contESP);
-     System.out.println("Personas colombianas que viven en Ecuador: " + contECU);
-     System.out.println("Personas colombianas que viven en Chile: " + contCHL);
-     System.out.println("Personas colombianas que viven en Canada: " + contCAN);
-     System.out.println("Personas colombianas que viven en Argentina: " + contARG);
-     System.out.println("Personas colombianas que viven en Australia: " + contAUS);
-     System.out.println("Personas colombianas que viven en Mexico: " + contMEX);
-     System.out.println("Personas colombianas que viven en Francia: " + contFRA);
+     System.out.println("USA: " + contUSA);
+     System.out.println("ESP: " + contESP);
+     System.out.println("ECU: " + contECU);
+     System.out.println("CHL: " + contCHL);
+     System.out.println("CAN: " + contCAN);
+     System.out.println("ARG: " + contARG);
+     System.out.println("AUS: " + contAUS);
+     System.out.println("MEX: " + contMEX);
+     System.out.println("FRA: " + contFRA);
      }
     
      if (filtro.equalsIgnoreCase("Grupo Edad")) {
-     System.out.println("Cantidad de colombianos Adultos en el extrangero: " + contAdult);
-     System.out.println("Cantidad de colombianos Adultos jovenes en el extrangero: " + contAdultJ);
+     System.out.println("Adulto: " + contAdult);
+     System.out.println("Adulto joven: " + contAdultJ);
     } 
      
      
